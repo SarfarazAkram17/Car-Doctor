@@ -7,8 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { GoSearch } from "react-icons/go";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { status, data: session } = useSession();
+console.log(session.user)
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -84,59 +87,44 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{navLinks}</ul>
       </div>
 
-      {/* <div className="navbar-end">
-        {user ? (
+      <div className="navbar-end flex items-center gap-4">
+        {status === "authenticated" ? (
           <>
-            <div className="dropdown dropdown-bottom dropdown-end">
-              <div tabIndex={0} role="button">
-                <img
-                  src={user.photoURL}
-                  alt="Profile"
-                  className="rounded-full object-cover w-13 mr-2 h-13 cursor-pointer"
-                />
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 w-56 rounded-box z-10 mt-1 space-y-2 text-center shadow"
-              >
-                <li className="text-xs">Hi, {user.displayName}</li>
-                <li className="text-xs">{userEmail}</li>
-                <Link
-                  className="px-4 py-1 font-semibold rounded-full text-sm"
-                  to="/dashboard"
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-sm font-bold w-[50%] mx-auto btn-error"
-                >
-                  Logout
-                </button>
-              </ul>
-            </div>
+            <img
+              src={session.user.image}
+              alt="Profile"
+              className="rounded-full object-cover w-12 h-12"
+            />
+            <button onClick={() => signOut()} className="btn font-bold rounded-sm btn-error btn-sm">
+              Logout
+            </button>
           </>
         ) : (
           <>
-            <Link to="/login">
-              <button className="btn bg-primary text-white border-2 border-primary hover:bg-transparent hover:text-primary mr-2">
-                Login
-              </button>
+            <Link
+              onClick={() => setIsOpen(false)}
+              className="font-semibold text-sm"
+              href="/login"
+            >
+              Login
             </Link>
-            <Link to="/register" className="hidden md:inline">
-              <button className="btn bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-white">
-                Register
-              </button>
+            <Link
+              onClick={() => setIsOpen(false)}
+              className="font-semibold text-sm"
+              href="/register"
+            >
+              Register
             </Link>
+            <HiOutlineShoppingBag
+              size={20}
+              className="cursor-pointer"
+            ></HiOutlineShoppingBag>
+            <GoSearch size={20} className="cursor-pointer"></GoSearch>
+            <button className="btn btn-primary border-[1.5px] rounded-md hover:text-white btn-outline">
+              Appointment
+            </button>
           </>
         )}
-      </div> */}
-      <div className="navbar-end flex items-center gap-4">
-        <HiOutlineShoppingBag size={20} className="cursor-pointer"></HiOutlineShoppingBag>
-        <GoSearch size={20} className="cursor-pointer"></GoSearch>
-        <button className="btn btn-primary border-[1.5px] rounded-md hover:text-white btn-outline">
-          Appointment
-        </button>
       </div>
 
       {/* Mobile Dropdown */}
@@ -147,13 +135,20 @@ const Navbar = () => {
         >
           <ul className="menu space-y-2 text-center">
             {navLinks}
-            {/* {!user && (
-              <Link href="/register" onClick={() => setIsOpen(false)}>
-                <button className="btn bg-transparent w-full text-primary border-2 border-primary hover:bg-primary hover:text-white">
-                  Register
-                </button>
-              </Link>
-            )} */}
+            <Link
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-1 font-semibold text-sm"
+              href="/login"
+            >
+              Login
+            </Link>
+            <Link
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-1 font-semibold text-sm"
+              href="/register"
+            >
+              Register
+            </Link>
           </ul>
         </div>
       )}

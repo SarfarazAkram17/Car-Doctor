@@ -1,8 +1,9 @@
-import { dbConnect } from "@/lib/dbConnect";
+import { collectionNames, dbConnect } from "@/lib/dbConnect";
+import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 
 const Services = async () => {
-  const serviceCollection = dbConnect("Services");
+  const serviceCollection = dbConnect(collectionNames.servicesCollection);
   const services = await serviceCollection.find().toArray();
 
   return (
@@ -33,7 +34,9 @@ const Services = async () => {
               <h5 className="font-semibold text-primary">
                 Price: ${service.price}
               </h5>
+              <Link href={`/services/${service._id}`}>
               <FaArrowRight size={18} className="text-primary" />
+              </Link>
             </div>
           </div>
         ))}
