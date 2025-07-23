@@ -63,7 +63,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar sticky z-50 bg-base-100 py-3 px-6 top-0">
+    <div className="navbar sticky z-50 bg-base-100 py-3 px-6 shadow top-0">
       <div className="navbar-start">
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)} className="btn btn-ghost">
