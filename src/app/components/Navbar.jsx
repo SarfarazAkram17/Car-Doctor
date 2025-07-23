@@ -11,7 +11,6 @@ import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { status, data: session } = useSession();
-console.log(session.user)
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -93,9 +92,12 @@ console.log(session.user)
             <img
               src={session.user.image}
               alt="Profile"
-              className="rounded-full object-cover w-12 h-12"
+              className="rounded-full object-cover -mr-2 w-12 h-12"
             />
-            <button onClick={() => signOut()} className="btn font-bold rounded-sm btn-error btn-sm">
+            <button
+              onClick={() => signOut()}
+              className="btn font-bold rounded-sm btn-error btn-sm"
+            >
               Logout
             </button>
           </>
@@ -115,16 +117,16 @@ console.log(session.user)
             >
               Register
             </Link>
-            <HiOutlineShoppingBag
-              size={20}
-              className="cursor-pointer"
-            ></HiOutlineShoppingBag>
-            <GoSearch size={20} className="cursor-pointer"></GoSearch>
-            <button className="btn btn-primary border-[1.5px] rounded-md hover:text-white btn-outline">
-              Appointment
-            </button>
           </>
         )}
+        <HiOutlineShoppingBag
+          size={20}
+          className="cursor-pointer"
+        ></HiOutlineShoppingBag>
+        <GoSearch size={20} className="cursor-pointer"></GoSearch>
+        <button className="btn btn-primary border-[1.5px] rounded-md hover:text-white btn-outline">
+          Appointment
+        </button>
       </div>
 
       {/* Mobile Dropdown */}

@@ -1,8 +1,8 @@
 import { loginUser } from "@/app/actions/loginUser";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import GoogleProvider from "next-auth/providers/google";
-// import GitHubProvider from "next-auth/providers/github";
-// import { collectionNames, dbConnect } from "./dbConnect";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import { collectionNames, dbConnect } from "./dbConnect";
 
 export const authOptions = {
   providers: [
@@ -29,37 +29,38 @@ export const authOptions = {
         }
       },
     }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // }),
-    // GitHubProvider({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET,
-    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
   ],
   pages: {
     signIn: "/login",
   },
-  //   callbacks: {
-  //     async signIn({ user, account }) {
-  //       if (account) {
-  //         const { providerAccountId, provider } = account;
-  //         const { email: user_email, image, name } = user;
-  //         const userCollection = dbConnect(collectionNames.usersCollection);
-  //         const isExisted = await userCollection.findOne({ providerAccountId });
-  //         if (!isExisted) {
-  //           const payload = {
-  //             providerAccountId,
-  //             provider,
-  //             email: user_email,
-  //             image,
-  //             name,
-  //           };
-  //           await userCollection.insertOne(payload);
-  //         }
-  //       }
-  //       return true;
-  //     },
-  //   },
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account) {
+        const { providerAccountId, provider } = account;
+        const { email, image, name } = user;
+
+        const usersCollection = dbConnect(collectionNames.usersCollection);
+        const isExisted = await usersCollection.findOne({ providerAccountId });
+        if (!isExisted) {
+          const payload = {
+            providerAccountId,
+            provider,
+            email,
+            photo: image,
+            name,
+          };
+          await usersCollection.insertOne(payload);
+        }
+      }
+      return true;
+    },
+  },
 };

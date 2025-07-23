@@ -35,35 +35,37 @@ export default function LoginForm() {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
-      <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold mb-2 text-sm">Email</span>
-        </div>
-        <input
-          type="text"
-          name="email"
-          placeholder="Type here"
-          className="input input-bordered w-full mb-2"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold mb-2 text-sm">Password</span>
-        </div>
-        <input
-          type="password"
-          name="password"
-          placeholder="Type here"
-          className="input input-bordered w-full mb-2"
-        />
-      </label>
-      <button className="btn btn-primary btn-outline w-full rounded-lg hover:text-white mt-2">
-        Login
-      </button>
-      <div className="divider mb-8">Or Sign In with</div>
+    <div>
+      <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
+        <label className="form-control w-full">
+          <div className="label w-full">
+            <span className="label-text font-bold mb-2 text-sm">Email</span>
+          </div>
+          <input
+            type="text"
+            name="email"
+            placeholder="Type here"
+            className="input input-bordered w-full mb-2"
+          />
+        </label>
+        <label className="form-control w-full">
+          <div className="label w-full">
+            <span className="label-text font-bold mb-2 text-sm">Password</span>
+          </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Type here"
+            className="input input-bordered w-full mb-2"
+          />
+        </label>
+        <button className="btn btn-primary btn-outline w-full rounded-lg hover:text-white mt-2">
+          Login
+        </button>
+      </form>
+      <div className="divider my-8">Or Sign In with</div>
       <SocialLogin />
-      <p className="text-center text-sm">
+      <p className="text-center text-sm  mt-4">
         Already have an account?{" "}
         <Link
           href="/register"
@@ -72,6 +74,6 @@ export default function LoginForm() {
           Register
         </Link>
       </p>
-    </form>
+    </div>
   );
 }
