@@ -1,12 +1,9 @@
-import { collectionNames, dbConnect } from "@/lib/dbConnect";
-import { ObjectId } from "mongodb";
 import Link from "next/link";
-import React from "react";
 
 const ServiceDetails = async ({ params }) => {
   const { id } = await params;
-  const servicesCollection = dbConnect(collectionNames.servicesCollection);
-  const service = await servicesCollection.findOne({ _id: new ObjectId(id) });
+  const res = await fetch(`http://localhost:3000/api/service/${id}`);
+  const service = await res.json();
 
   return (
     <div className="max-w-5xl px-4 mx-auto py-10">
@@ -39,14 +36,14 @@ const ServiceDetails = async ({ params }) => {
         </div>
         {/* Right Side */}
         <div className="col-span-3 space-y-4">
-          <Link href={`/checkout/${service?._id}`}>
-            <button className="w-full text-white h-9 bg-orange-500">
-              Checkout
-            </button>
-          </Link>
           <p className="text-center text-xl font-bold">
             Price: $ {service?.price}
           </p>
+          <Link href={`/checkout/${service?._id}`}>
+            <button className="btn btn-primary w-full rounded-md text-white">
+              Checkout
+            </button>
+          </Link>
         </div>
       </section>
     </div>

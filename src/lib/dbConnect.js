@@ -1,9 +1,10 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
 export const collectionNames = {
-servicesCollection: 'Services',
-usersCollection: 'Users',
-}
+  servicesCollection: "Services",
+  usersCollection: "Users",
+  bookingsCollection: "Bookings",
+};
 export const dbConnect = (collectionName) => {
   const uri = process.env.MONGODB_URI;
 
@@ -15,5 +16,5 @@ export const dbConnect = (collectionName) => {
     },
   });
 
-  return client.db(process.env.DB_NAME).collection(collectionName)
+  return client.db(process.env.DB_NAME).collection(collectionName);
 };

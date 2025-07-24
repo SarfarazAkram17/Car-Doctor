@@ -24,14 +24,12 @@ export default function LoginForm() {
       });
       if (response?.ok) {
         router.push("/");
-        toast.success("Logged In successfully");
         form.reset();
       } else {
         toast.error("Login failed");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Login failed");
+      toast.error(`Login failed: ${error.message}`);
     }
   };
   return (
