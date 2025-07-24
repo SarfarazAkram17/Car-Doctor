@@ -1,47 +1,35 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-const CheckoutForm = ({ service }) => {
-  const { data: session } = useSession();
+const BookingUpdateForm = ({ booking }) => {
+  const router = useRouter();
 
-  const handleBookService = async (e) => {
+  const handleUpdateBooking = async (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const name = form.name.value;
     const date = form.date.value;
     const phone = form.phone.value;
     const address = form.address.value;
-    const email = form.email.value;
-    const bookingPayload = {
-      // Session
-      customerName: name,
-      email,
-
-      // User Inputs
+    const updatedBooking = {
       date,
       phone,
       address,
-
-      // Extra information
-      service_id: service._id,
-      service_name: service.title,
-      service_img: service.img,
-      service_price: service.price,
     };
 
-    const res = await fetch("https://car-doctor-snowy.vercel.app/api/service", {
-      method: "POST",
+    const res = await fetch(`https://car-doctor-snowy.vercel.app/api/my-bookings/${booking._id}`, {
+      method: "PATCH",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(bookingPayload),
+      body: JSON.stringify(updatedBooking),
     });
     const postedResponse = await res.json();
-    if (postedResponse.insertedId) {
-      toast.success("You booking is done");
-      form.reset()
+    if (postedResponse.modifiedCount) {
+      toast.success("You booking is updated successfully");
+      form.reset();
+      router.push('/my-bookings')
     }
   };
 
@@ -49,16 +37,17 @@ const CheckoutForm = ({ service }) => {
     <div className="my-10">
       <div className="w-11/12 mx-auto">
         <h2 className="text-center text-3xl mb-10">
-          Book Service : {service?.title}
+          Book Service : {booking?.title}
         </h2>
-        <form onSubmit={handleBookService}>
+
+        <form onSubmit={handleUpdateBooking}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
               <input
-                defaultValue={session?.user?.name}
+                defaultValue={booking.customerName}
                 readOnly
                 type="text"
                 name="name"
@@ -72,7 +61,7 @@ const CheckoutForm = ({ service }) => {
                 <span className="label-text">Email</span>
               </label>
               <input
-                defaultValue={session?.user?.email}
+                defaultValue={booking.email}
                 readOnly
                 type="text"
                 name="email"
@@ -86,7 +75,7 @@ const CheckoutForm = ({ service }) => {
               </label>
               <input
                 type="text"
-                defaultValue={service?.price}
+                defaultValue={booking?.service_price}
                 readOnly
                 name="price"
                 placeholder="Service price"
@@ -97,7 +86,13 @@ const CheckoutForm = ({ service }) => {
               <label className="label">
                 <span className="label-text">Date</span>
               </label>
-              <input type="date" name="date" required className="input input-bordered w-full block mt-2" />
+              <input
+                type="date"
+                defaultValue={booking.date}
+                name="date"
+                required
+                className="input input-bordered w-full block mt-2"
+              />
             </div>
             <div className="form-control">
               <label className="label">
@@ -108,6 +103,7 @@ const CheckoutForm = ({ service }) => {
                 name="phone"
                 placeholder="Your Phone"
                 required
+                defaultValue={booking.phone}
                 className="input input-bordered w-full block mt-2"
               />
             </div>
@@ -120,6 +116,7 @@ const CheckoutForm = ({ service }) => {
                 name="address"
                 placeholder="Your Address"
                 required
+                defaultValue={booking.address}
                 className="input input-bordered w-full block mt-2"
               />
             </div>
@@ -128,7 +125,7 @@ const CheckoutForm = ({ service }) => {
             <input
               className="btn btn-primary btn-block text-white rounded-lg"
               type="submit"
-              value="Order Confirm"
+              value="Update Booking"
             />
           </div>
         </form>
@@ -137,4 +134,4 @@ const CheckoutForm = ({ service }) => {
   );
 };
 
-export default CheckoutForm;
+export default BookingUpdateForm;

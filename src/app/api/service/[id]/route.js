@@ -20,7 +20,7 @@ export const DELETE = async (req, { params }) => {
   } else {
     return NextResponse.json(
       { success: false, message: "Forbidden Action" },
-      { status: 401 }
+      { status: 403 }
     );
   }
 };

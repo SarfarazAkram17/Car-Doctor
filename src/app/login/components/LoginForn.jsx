@@ -25,6 +25,7 @@ export default function LoginForm() {
       if (response?.ok) {
         router.push("/");
         form.reset();
+        router.refresh();
       } else {
         toast.error("Login failed");
       }

@@ -2,7 +2,7 @@ import CheckoutForm from "@/app/components/forms/CheckoutForm";
 
 const Checkout = async ({ params }) => {
   const { id } = await params;
-  const res = await fetch(`http://localhost:3000/api/service/${id}`);
+  const res = await fetch(`https://car-doctor-snowy.vercel.app/api/service/${id}`);
   const service = await res.json();
 
   return (
